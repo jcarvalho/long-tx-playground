@@ -1,0 +1,54 @@
+package pt.ist.longtx.test;
+
+class NoteBook {
+    String name;
+}
+
+class User {
+    String name;
+}
+
+class Note {
+    String contents;
+    DateTime creation;
+    DateTime lastEdit;
+}
+
+relation DomainRootHasUsers {
+    .pt.ist.fenixframework.DomainRoot playsRole domainRoot;
+    User playsRole user {
+        multiplicity *;
+    }
+}
+
+relation UserHasTransactionalContexts {
+    User playsRole user;
+    .pt.ist.fenixframework.longtx.TransactionalContext playsRole transaction {
+        multiplicity *;
+        indexed by name;
+    }
+}
+
+relation UserHasSharedTransactionalContexts {
+    User playsRole sharedUser {
+        multiplicity *;
+    }
+    .pt.ist.fenixframework.longtx.TransactionalContext playsRole sharedTransaction {
+        multiplicity *;
+    }
+}
+
+
+relation UserHasNoteBooks {
+    User playsRole user;
+    NoteBook playsRole notebook {
+        multiplicity *;
+    }
+}
+
+relation NoteBookHasNotes {
+    NoteBook playsRole notebook;
+    Note playsRole note {
+        multiplicity *;
+    }
+}
