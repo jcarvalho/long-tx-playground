@@ -2,6 +2,7 @@ package pt.ist.longtx.test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 import org.junit.BeforeClass;
@@ -56,11 +57,18 @@ public class NoteBookTest {
             LongTransaction.removeContextFromThread();
         }
 
-        printNotes(joao);
+        printNotes(joao, true);
+
+        try {
+            LongTransaction.setContextForThread(context);
+            printNotes(joao, false);
+        } finally {
+            LongTransaction.removeContextFromThread();
+        }
     }
 
     @Atomic(mode = TxMode.READ)
-    private void printNotes(User user) {
+    private void printNotes(User user, boolean shouldBeEmpty) {
         logger.info("Printing notes for user {}", user.getName());
         for (NoteBook notebook : user.getNotebookSet()) {
             logger.info("Notebook: {}", notebook.getName());
@@ -68,7 +76,11 @@ public class NoteBookTest {
                 logger.info("\tNote: {}", note.getContents());
             }
         }
-        assertThat(notebook.getNoteSet(), is(empty()));
+        if (shouldBeEmpty) {
+            assertThat(notebook.getNoteSet(), is(empty()));
+        } else {
+            assertThat(notebook.getNoteSet(), hasSize(10));
+        }
     }
 
     @Atomic(mode = TxMode.WRITE)
