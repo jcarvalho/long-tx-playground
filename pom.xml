@@ -15,9 +15,7 @@
     <name>long-tx-test</name>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <version.fenixframework>2.1-SNAPSHOT</version.fenixframework>
+        <version.fenix.framework>2.2.0-SNAPSHOT</version.fenix.framework>
         <fenixframework.code.generator>pt.ist.fenixframework.backend.jvstm.JVSTMCodeGenerator</fenixframework.code.generator>
     </properties>
 
@@ -26,7 +24,7 @@
             <plugin>
                 <groupId>pt.ist</groupId>
                 <artifactId>ff-maven-plugin</artifactId>
-                <version>${version.fenixframework}</version>
+                <version>${version.fenix.framework}</version>
                 <configuration>
                     <codeGeneratorClassName>${fenixframework.code.generator}</codeGeneratorClassName>
                 </configuration>
@@ -47,12 +45,12 @@
         <dependency>
             <groupId>pt.ist</groupId>
             <artifactId>fenix-framework-backend-jvstm-common-code-generator</artifactId>
-            <version>2.1-SNAPSHOT</version>
+            <version>${version.fenix.framework}</version>
         </dependency>
         <dependency>
             <groupId>pt.ist</groupId>
             <artifactId>fenix-framework-core-long-tx-api</artifactId>
-            <version>2.1-SNAPSHOT</version>
+            <version>${version.fenix.framework}</version>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
