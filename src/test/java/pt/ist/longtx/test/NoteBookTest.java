@@ -29,12 +29,16 @@ public class NoteBookTest {
     private static TransactionalContext context;
     private static NoteBook notebook;
 
-    @Atomic
     @BeforeClass
+    public static void setup() {
+        setupUsers();
+        setupContext();
+    }
+
+    @Atomic
     public static void setupUsers() {
         DomainRoot domainRoot = FenixFramework.getDomainRoot();
 
-        context = new TransactionalContext("thesis");
         notebook = new NoteBook("Thesis Notes");
 
         joao = new User("Joao");
@@ -46,6 +50,11 @@ public class NoteBookTest {
 
         domainRoot.addUser(joao);
         domainRoot.addUser(catarina);
+    }
+
+    @Atomic
+    public static void setupContext() {
+        context = new TransactionalContext("thesis");
     }
 
     @Test
