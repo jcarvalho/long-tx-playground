@@ -16,6 +16,7 @@ import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.Atomic.TxMode;
 import pt.ist.fenixframework.DomainRoot;
 import pt.ist.fenixframework.FenixFramework;
+import pt.ist.fenixframework.longtx.LogEntry;
 import pt.ist.fenixframework.longtx.LongTransaction;
 import pt.ist.fenixframework.longtx.TransactionalContext;
 
@@ -73,6 +74,31 @@ public class NoteBookTest {
             printNotes(joao, false);
         } finally {
             LongTransaction.removeContextFromThread();
+        }
+
+        printNotes(joao, true);
+
+        dumpContext();
+    }
+
+    @Atomic(mode = TxMode.READ)
+    protected void dumpContext() {
+        logger.info("Printing contents of context.");
+        {
+            logger.info("Write Set:");
+            LogEntry entry = context.getWriteSet();
+            while (entry != null) {
+                logger.info("\t{}", entry.print());
+                entry = entry.getNextEntry();
+            }
+        }
+        {
+            logger.info("Read Set:");
+            LogEntry entry = context.getReadSet();
+            while (entry != null) {
+                logger.info("\t{}", entry.print());
+                entry = entry.getNextEntry();
+            }
         }
     }
 

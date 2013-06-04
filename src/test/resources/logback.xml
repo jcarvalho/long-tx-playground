@@ -8,7 +8,7 @@
         </encoder>
     </appender>
 
-    <logger name="pt.ist.fenixframework.backend.jvstm.longtx" level="TRACE" additivity="false">
+    <logger name="pt.ist.fenixframework.backend.jvstm.longtx" level="INFO" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
 
