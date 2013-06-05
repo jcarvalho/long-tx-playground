@@ -87,6 +87,10 @@ public class NoteBookTest {
         printNotes(joao, 0);
 
         dumpContext();
+
+        commitContext();
+
+        printNotes(joao, 20);
     }
 
     @Atomic(mode = TxMode.READ)
@@ -108,6 +112,11 @@ public class NoteBookTest {
                 entry = entry.getNextEntry();
             }
         }
+    }
+
+    @Atomic(mode = TxMode.WRITE)
+    protected void commitContext() {
+        context.commit(false);
     }
 
     @Atomic(mode = TxMode.READ)
