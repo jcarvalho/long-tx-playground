@@ -14,6 +14,7 @@ import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.Atomic.TxMode;
 import pt.ist.fenixframework.DomainRoot;
 import pt.ist.fenixframework.FenixFramework;
+import pt.ist.fenixframework.core.TransactionError;
 import pt.ist.fenixframework.longtx.LogEntry;
 import pt.ist.fenixframework.longtx.LongTransaction;
 import pt.ist.fenixframework.longtx.TransactionalContext;
@@ -93,6 +94,31 @@ public class NoteBookTest {
         printNotes(joao, 20);
     }
 
+    @Test(expected = TransactionError.class)
+    public void testConflictDetection() {
+        setupContext();
+
+        try {
+            LongTransaction.setContextForThread(context);
+            createNotes(joao, notebook);
+        } finally {
+            LongTransaction.removeContextFromThread();
+        }
+
+        createNotes(joao, notebook);
+        printNotes(joao, 30);
+
+        try {
+            LongTransaction.setContextForThread(context);
+            printNotes(joao, 30);
+        } finally {
+            LongTransaction.removeContextFromThread();
+        }
+
+        dumpContext();
+        commitContext();
+    }
+
     @Atomic(mode = TxMode.READ)
     protected void dumpContext() {
         logger.info("Printing contents of context.");
@@ -131,10 +157,12 @@ public class NoteBookTest {
         assertThat(notebook.getNoteSet(), hasSize(size));
     }
 
+    private static int noteCounter = 1;
+
     @Atomic(mode = TxMode.WRITE)
     private void createNotes(User user, NoteBook notes) {
         for (int i = 1; i <= 10; i++) {
-            notes.addNote(new Note("Write chapter " + i));
+            notes.addNote(new Note("Write chapter " + noteCounter++));
         }
     }
 }
