@@ -27,6 +27,9 @@
                 <version>${version.fenix.framework}</version>
                 <configuration>
                     <codeGeneratorClassName>${fenixframework.code.generator}</codeGeneratorClassName>
+                    <params>
+                        <collectionClassName>pt.ist.fenixframework.adt.bplustree.DomainBPlusTree</collectionClassName>
+                    </params>
                 </configuration>
                 <executions>
                     <execution>
