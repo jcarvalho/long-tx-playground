@@ -119,6 +119,14 @@ public class NoteBookTest {
         commitContext();
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void testDuplicateCommits() {
+        setupContext();
+
+        commitContext();
+        commitContext();
+    }
+
     @Atomic(mode = TxMode.READ)
     protected void dumpContext() {
         logger.info("Printing contents of context.");
