@@ -1,0 +1,4 @@
+[submodule "long-tx-benchmark"]
+	path = long-tx-benchmark
+	url = git@github.com:jcarvalho/long-tx-benchmark.git
+	branch = master
